@@ -8,11 +8,7 @@ import org.openqa.selenium.By;
 public class InstitutionChooserMenu extends KaszperPage{
 	// after choosing an institution the page is automatically left, 
 	//so if we want to choose another, we have to enter again
-	
-	public InstitutionChooserMenu(String loginname, String password) {
-		super(loginname, password);
-		selectMenu("i");
-	}
+
 	
 	public InstitutionChooserMenu(KaszperPage source) {
 		super(source, "i");

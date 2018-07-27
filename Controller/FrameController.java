@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import Controller.Tasks.SetupTask;
 import Controller.Tasks.Task;
 import DAL.KaszperPage;
 import javafx.collections.FXCollections;
@@ -45,9 +46,11 @@ public class FrameController implements Initializable{
 	@FXML
 	public void connectEventHandler(ActionEvent event) {
 		// Getting the input from the UI.
-		String username = usernameField.getText();
+		String userName = usernameField.getText();
 		String password = passwordField.getText();
-		SetupTask setup = new SetupTask(username, password);
+		SetupTask setup = new SetupTask();
+		setup.setUserName(userName);
+		setup.setPassword(password);
 		currentpage = setup.execute();
 	}
 	
