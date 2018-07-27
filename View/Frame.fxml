@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections ?>
+<?import java.lang.String ?>
+<?import javafx.scene.control.DatePicker?>
+
+
+<!-- All the GUI components -->
+<!-- Root (vertical box) layout -->
+<VBox fx:controller="Controller.FrameController" xmlns:fx="http://javafx.com/fxml/1"
+	fx:id="rootLayout" alignment="TOP_CENTER" spacing="10" prefWidth="600"
+	prefHeight="460" minWidth="600" minHeight="460">
+
+	<!-- Set padding values -->
+	<padding>
+		<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+	</padding>
+
+	<!-- Connection panel -->
+	<HBox fx:id="connectionLayout" alignment="CENTER" spacing="10">
+
+		<!-- Username field -->
+		<TextField fx:id="usernameField" maxWidth="200" maxHeight="27" 
+			minWidth="100" minHeight="27" prefWidth="150" prefHeight="27"
+			onAction="#connectEventHandler" />
+
+		<!-- Password field -->
+		<PasswordField fx:id="passwordField" maxWidth="200" maxHeight="27" 
+			minWidth="100" minHeight="27" prefWidth="150" prefHeight="27"
+			onAction="#connectEventHandler" />
+
+		<!-- Connect button -->
+		<Button fx:id="connectButton" text="Belépés" prefWidth="80"
+			onAction="#connectEventHandler" />
+
+		<!-- Label to show the connection status -->
+		<Label fx:id="connectionStateLabel" minWidth="200" minHeight="17"
+			prefWidth="200" prefHeight="17" />
+
+	</HBox>
+
+	<!-- Tabbed panel -->
+	<TabPane>
+		<tabs>
+			<!-- Search tab -->
+			<Tab fx:id="searchTab" text=" Search " closable="False">
+				<fx:include fx:id="newtasktab" source="NewTaskTab.fxml" />
+				
+			</Tab>
+
+			<Tab fx:id="editTab" text=" Mégsemmi " closable="False">
+
+			</Tab>
+		</tabs>
+	</TabPane>
+</VBox>

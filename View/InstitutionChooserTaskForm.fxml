@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections ?>
+<?import java.lang.String ?>
+<?import javafx.scene.Node?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextField?>
+
+<GridPane fx:controller="Controller.InstitutionChooserTaskFormController" xmlns:fx="http://javafx.com/fxml/1"
+	fx:id="InstitutionChooserTaskForm" vgap="5" hgap="5">
+	
+	<Label 		GridPane.rowIndex="1" GridPane.columnIndex="0" text="Intézmény nevének része:"/>
+	<TextField 	GridPane.rowIndex="1" GridPane.columnIndex="1" fx:id="name" />
+					
+</GridPane>
