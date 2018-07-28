@@ -1,31 +1,20 @@
-package DAL;
+package DAL.Menu91;
 
-import java.util.concurrent.TimeUnit;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-public class Menu91 extends KaszperPage{
+import DAL.IColumn;
+import DAL.KaszperPage;
+import DAL.ListPage;
+
+public class Menu91ListPage extends ListPage{
 	
 	
-	public Menu91(KaszperPage source) {
+	public Menu91ListPage(KaszperPage source) {
 		super(source, "91");
 	}
 	
-	public void setFilter(String value,Filter filter){
-		String filtercss = "td.filter-table-control:nth-child(" + filter.getValue() + ") > font:nth-child(1) > input:nth-child(1)";
-		getElementByCss(filtercss).sendKeys(value);
-	}
-	
-	public void applyFilters() {
-		String css = "font.default:nth-child(3) > input:nth-child(1)";
-		getElementByCss(css).click();
-		waitForLoading();
-	}
-	
-	public enum Filter{
+	public enum Filter implements IColumn{
 		BANKPTNAP(6),EV(4);
 		
 		private int value;
@@ -33,7 +22,8 @@ public class Menu91 extends KaszperPage{
 			this.value = value;
 		}
 		
-		public int getValue() {
+		@Override
+		public int getColumn() {
 			return value;
 		}
 	}
@@ -168,22 +158,8 @@ public class Menu91 extends KaszperPage{
 		waitUntilElementisClickable(By.cssSelector(veglegesitcss));
 		
 	}
-	public boolean selectNextPage() {
-		String nextpagecss = ".filter-table-pager-bottom > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) "
-				+ "> tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font:nth-child(6) > input:nth-child(1)";
-		WebElement nextpagebutton = getElementByCss(nextpagecss);
-		if(nextpagebutton.isEnabled()) {
-			nextpagebutton.click();
-			waitForLoading();
-			return true;
-		}
-		return false;
-	}
-	public int getNumberofRowsOnListPage() {
-		String rowcss = ".filter-table > tbody:nth-child(1) > tr:nth-child(3) > "
-				+ "td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > * ";
-		return getNumOfOccurances(rowcss)-4;
-	}
+	
+
 	
 	public int getNumberofKontirTetelek() {
 		
@@ -206,14 +182,13 @@ public class Menu91 extends KaszperPage{
 		return getDriver().findElement(By.cssSelector(cellselector)).getText();
 	}
 	
-	public String enterRowDetailsPage(int rowindex) {
+	public void enterRowDetailsPage(int rowindex) {
+		//int columnindex = 3;
+		
 		String detailslinkcss = ".filter-table > tbody:nth-child(1) > "
 				+ "tr:nth-child(3) > td:nth-child(1) > table:nth-child(1) "
 				+ "> tbody:nth-child(1) > tr:nth-child("+(rowindex+4)+") > td:nth-child(3) > "
 						+ "span > span > a > nobr";
 		getDriver().findElement(By.cssSelector(detailslinkcss)).click();
-		return getId(rowindex);
 	}
-
-	
 }

@@ -1,29 +1,16 @@
-package DAL;
+package DAL.Menu1230;
 
 import org.openqa.selenium.WebElement;
 
-import DAL.Menu91.Filter;
+import DAL.IColumn;
+import DAL.KaszperPage;
+import DAL.ListPage;
 
-public class Menu1230 extends KaszperPage{
+public class Menu1230ListPage extends ListPage{
 	
-	public Menu1230(KaszperPage source) {super(source,"1230");}
+	public Menu1230ListPage(KaszperPage source) {super(source,"1230");}
 	
-	
-	public void setFilter(String value,Filter filter){
-		String filtercss = "td.filter-table-control:nth-child(" + filter.getValue() + ") > font:nth-child(1) > input:nth-child(1)";
-		getElementByCss(filtercss).sendKeys(value);
-		sleep(0.1f);
-	}
-	
-	public void clearAllFilters() {
-		String css = ".filter-table-pager-top > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) > "
-				+ "tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font:nth-child(6) > "
-				+ "input:nth-child(1)";
-		getElementByCss(css).click();
-		waitForLoading();
-	}
-	
-	public enum Filter{
+	public enum Filter implements IColumn{
 		BANKPTNAP(10),
 		PARTNERNEV(4);
 		private int value;
@@ -31,36 +18,12 @@ public class Menu1230 extends KaszperPage{
 			this.value = value;
 		}
 		
-		public int getValue() {
+		@Override
+		public int getColumn() {
 			return value;
 		}
 	}
 	
-	public void applyFilters() {
-		String css = "font.default:nth-child(3) > input:nth-child(1)";
-		getElementByCss(css).click();
-		waitForLoading();
-	}
-	
-	public int getNumberofRowsOnListPage() {
-		String rowcss = ".filter-table > tbody:nth-child(1) > tr:nth-child(3) > "
-				+ "td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > * ";
-		return getNumOfOccurances(rowcss)-4;
-	}
-	
-	
-	public boolean selectNextPage() {
-		String nextpagecss = ".filter-table-pager-bottom > div:nth-child(1) > div:nth-child(1) > table:nth-child(1) "
-				+ "> tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > font:nth-child(6) > input:nth-child(1)";
-		
-		WebElement nextpagebutton = getElementByCss(nextpagecss);
-		if(nextpagebutton.isEnabled()) {
-			nextpagebutton.click();
-			waitForLoading();
-			return true;
-		}
-		return false;
-	}
 	
 	public void tickRecord(int rowindex) {
 		String css = ".filter-table > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1) > table:nth-child(1) "

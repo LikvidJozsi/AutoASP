@@ -6,15 +6,15 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 
 import DAL.KaszperPage;
-import DAL.Menu91;
-import DAL.Menu91.Color;
-import DAL.Menu91.Filter;
+import DAL.Menu91.Menu91ListPage;
+import DAL.Menu91.Menu91ListPage.Color;
+import DAL.Menu91.Menu91ListPage.Filter;
 import net.bytebuddy.asm.Advice.OnDefaultValue;
 
 //TODO might skip rows if database changes while in operation
 public class AcceptAndFinalizeTask extends Task {
 
-	private Menu91 menu91;
+	private Menu91ListPage menu91;
 	private String bankPenztarNapSzuro;
 	private String evSzuro;
 
@@ -26,7 +26,7 @@ public class AcceptAndFinalizeTask extends Task {
 
 	@Override
 	public KaszperPage execute() {
-		menu91 = new Menu91(startingpage);
+		menu91 = new Menu91ListPage(startingpage);
 		menu91.setFilter(bankPenztarNapSzuro, Filter.BANKPTNAP);
 		menu91.setFilter(evSzuro, Filter.EV);
 		menu91.applyFilters();
@@ -53,7 +53,7 @@ public class AcceptAndFinalizeTask extends Task {
 			try {
 				if (lastid.equals(menu91.getId(currentrow))) {
 					currentrow++;
-					if(currentrow>=menu91.getNumberofRowsOnListPage())
+					if(currentrow>=menu91.getNumberofRows())
 						break;
 				}
 				lastid = menu91.getId(currentrow);

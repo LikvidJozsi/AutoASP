@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.Sleeper;
 import Controller.Alternatives;
 import Controller.ExpressionComparator;
 import DAL.KaszperPage;
-import DAL.Menu1230;
-import DAL.Menu1230.Filter;
+import DAL.Menu1230.Menu1230ListPage;
+import DAL.Menu1230.Menu1230ListPage.Filter;
 
 public class Kontirozas1230Task extends Task{
 
@@ -23,7 +23,7 @@ public class Kontirozas1230Task extends Task{
 	private String afaMentesKontir;
 	private String afa5Kontir;
 
-	Menu1230 menu;
+	Menu1230ListPage menu;
 	private ExpressionComparator megjegyzesComparator;
 
 	public void setAfaMentesKontir(String afaMentesKontir) {
@@ -63,7 +63,7 @@ public class Kontirozas1230Task extends Task{
 	@Override
 	public KaszperPage execute() {
 		initComparator();
-		menu = new Menu1230(startingpage);
+		menu = new Menu1230ListPage(startingpage);
 		menu.clearAllFilters();
 		menu.setFilter(bankPenztarNapFilter, Filter.BANKPTNAP);
 		menu.setFilter(partnerNevFilter, Filter.PARTNERNEV);
@@ -88,11 +88,11 @@ public class Kontirozas1230Task extends Task{
 	private void ProcessPage() {
 		int currentrow = 0;
 		String lastid = "";
-		System.out.println("Sorok szama: " + menu.getNumberofRowsOnListPage() );
+		System.out.println("Sorok szama: " + menu.getNumberofRows() );
 		while (true) {
 			if (lastid.equals(menu.getId(currentrow))) {
 				currentrow++;
-				if(currentrow>=menu.getNumberofRowsOnListPage())
+				if(currentrow>=menu.getNumberofRows())
 					break;
 			}
 			lastid = menu.getId(currentrow);
