@@ -190,5 +190,6 @@ public class Menu91ListPage extends ListPage{
 				+ "> tbody:nth-child(1) > tr:nth-child("+(rowindex+4)+") > td:nth-child(3) > "
 						+ "span > span > a > nobr";
 		getDriver().findElement(By.cssSelector(detailslinkcss)).click();
+		sleep(1);
 	}
 }

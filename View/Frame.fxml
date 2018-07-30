@@ -7,9 +7,6 @@
 <?import java.lang.String ?>
 <?import javafx.scene.control.DatePicker?>
 
-
-<!-- All the GUI components -->
-<!-- Root (vertical box) layout -->
 <VBox fx:controller="Controller.FrameController" xmlns:fx="http://javafx.com/fxml/1"
 	fx:id="rootLayout" alignment="TOP_CENTER" spacing="10" prefWidth="600"
 	prefHeight="460" minWidth="600" minHeight="460">
@@ -19,7 +16,6 @@
 		<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 	</padding>
 
-	<!-- Connection panel -->
 	<HBox fx:id="connectionLayout" alignment="CENTER" spacing="10">
 
 		<!-- Username field -->
@@ -46,13 +42,13 @@
 	<TabPane>
 		<tabs>
 			<!-- Search tab -->
-			<Tab fx:id="searchTab" text=" Search " closable="False">
+			<Tab fx:id="searchTab" text=" Új feladat " closable="False">
 				<fx:include fx:id="newtasktab" source="NewTaskTab.fxml" />
 				
 			</Tab>
 
-			<Tab fx:id="editTab" text=" Mégsemmi " closable="False">
-
+			<Tab fx:id="kontirSorokTab" text="Kontír sorok" closable="False">
+				<fx:include fx:id="kontirsorokTab" source="KontirSorokTab.fxml"/>
 			</Tab>
 		</tabs>
 	</TabPane>

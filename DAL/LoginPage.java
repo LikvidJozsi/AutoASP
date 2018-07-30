@@ -30,7 +30,7 @@ public class LoginPage extends BasePage{
 	 */
 	@SuppressWarnings("deprecation")
 	private static WebDriver openWindow() {
-		System.setProperty("webgetDriver().gecko.getDriver()", "C:\\Users\\bduvi\\Desktop\\webscraping\\geckogetDriver().exe");
+		System.setProperty("webdriver.gecko.driver", "C:\\Users\\bduvi\\Desktop\\webscraping\\geckodriver.exe");
 		File file = new File("C:\\Users\\bduvi\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\epcaih5m.Selenium");
 		DesiredCapabilities dc = DesiredCapabilities.firefox();
 		FirefoxProfile profile = new FirefoxProfile(file);
@@ -54,6 +54,7 @@ public class LoginPage extends BasePage{
 	public void closeMessagePopup() {
 		waitUntilElementisClickable(By.cssSelector(xButtonCss));
 		clickElement(xButtonCss);
+		sleep(1);
 	}
 
 	public void clickAuthenticateButton() {
