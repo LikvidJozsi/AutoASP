@@ -3,6 +3,8 @@ package Controller;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Model.KontirSor;
@@ -42,9 +44,8 @@ public class KontirSorokTabController implements Initializable{
 	
 	
 	public KontirSorokTabController() {
-		kontirSorok = FXCollections.observableArrayList(new ArrayList<KontirSor>());
+		kontirSorok = FXCollections.observableArrayList(KontirSorManager.getInstance().getKontirSorok());
 	}
-
 	
 	public void addEventHandler() {
 		KontirSor newsor = new KontirSor();
@@ -52,6 +53,7 @@ public class KontirSorokTabController implements Initializable{
 		newsor.setMegjegyzes(megjegyzesTextField.getText());
 		newsor.setKontirAzonosito(kontirAzonositoTextField.getText());
 		kontirSorok.add(newsor);
+		KontirSorManager.getInstance().add(newsor);
 	}
 	
 	
@@ -59,12 +61,12 @@ public class KontirSorokTabController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setTablePropertyMapping();
 		
-		KontirSor pelda = new KontirSor();
+		/*KontirSor pelda = new KontirSor();
 		pelda.setNev("peldaNev");
 		pelda.setKontirAzonosito("peldaAzonosito");
 		pelda.setMegjegyzes("peldaMegjegyzes");
 		kontirSorok.add(pelda);
-		
+		*/
 		
 		kontirTetelekTable.setItems(kontirSorok);
 		

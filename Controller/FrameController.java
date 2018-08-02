@@ -34,7 +34,7 @@ public class FrameController implements Initializable{
 	@FXML
 	Label connectionStateLabel;
 	@FXML
-	NewTaskController newtasktabController;
+	NewTaskController newTaskTabController;
 	
 	KaszperPage currentpage;
 	
@@ -60,7 +60,7 @@ public class FrameController implements Initializable{
 		//TODO only for testing default user data
 		usernameField.setText("szucs.judit@tiszanana");
 		passwordField.setText("457JUdit");
-		newtasktabController.setFramecontroller(this);
+		newTaskTabController.setFramecontroller(this);
 		
 		//tipusComboBox.getItems().add(new ComboBoxItem<String>("Hang", "hang"));
 		// egy �res �rt�ket �ll�tunk be defaultnak

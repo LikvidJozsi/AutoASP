@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import Controller.Tasks.Task;
+import Model.KontirSor;
 import Model.TaskComboboxItem;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class NewTaskController implements Initializable{
 	public void setFramecontroller(FrameController framecontroller) {
 		this.framecontroller = framecontroller;
 	}
-
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		taskChooser.getItems().add(new TaskComboboxItem("91 - Igazolás&Véglegesítés","/View/AcceptAndFinalizeForm.fxml"));

@@ -31,9 +31,9 @@ public class AcceptAndFinalizeTask extends Task {
 		menu91.setFilter(evSzuro, Filter.EV);
 		menu91.applyFilters();
 		
-		for (int i = 0; i < 90; i++) {
+		/*for (int i = 0; i < 90; i++) {
 			menu91.selectNextPage();
-		}
+		}*/
 
 		do {
 			processPage();

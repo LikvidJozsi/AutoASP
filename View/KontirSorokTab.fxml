@@ -13,7 +13,7 @@
 
 
 <VBox fx:controller="Controller.KontirSorokTabController" xmlns:fx="http://javafx.com/fxml/1"
-	fx:id="newTaskLayout" prefWidth="500" spacing="7">
+	fx:id="kontirSorokLayout" prefWidth="500" spacing="7">
 
 	<TableView fx:id="kontirTetelekTable" editable="true">
 		<columns>
