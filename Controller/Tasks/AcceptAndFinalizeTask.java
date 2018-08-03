@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 
 import DAL.KaszperPage;
+import DAL.Menu91.Menu91DetailsPage;
 import DAL.Menu91.Menu91ListPage;
 import DAL.Menu91.Menu91ListPage.Color;
 import DAL.Menu91.Menu91ListPage.Filter;
@@ -14,7 +15,7 @@ import net.bytebuddy.asm.Advice.OnDefaultValue;
 //TODO might skip rows if database changes while in operation
 public class AcceptAndFinalizeTask extends Task {
 
-	private Menu91ListPage menu91;
+	private Menu91ListPage listPage;
 	private String bankPenztarNapSzuro;
 	private String evSzuro;
 
@@ -26,10 +27,10 @@ public class AcceptAndFinalizeTask extends Task {
 
 	@Override
 	public KaszperPage execute() {
-		menu91 = new Menu91ListPage(startingpage);
-		menu91.setFilter(bankPenztarNapSzuro, Filter.BANKPTNAP);
-		menu91.setFilter(evSzuro, Filter.EV);
-		menu91.applyFilters();
+		listPage = new Menu91ListPage(startingpage);
+		listPage.setFilter(bankPenztarNapSzuro, Filter.BANKPTNAP);
+		listPage.setFilter(evSzuro, Filter.EV);
+		listPage.applyFilters();
 		
 		/*for (int i = 0; i < 90; i++) {
 			menu91.selectNextPage();
@@ -37,9 +38,9 @@ public class AcceptAndFinalizeTask extends Task {
 
 		do {
 			processPage();
-		}while(menu91.selectNextPage());
+		}while(listPage.selectNextPage());
 
-		return menu91;
+		return listPage;
 	}
 
 	public void setBankpenztarnapszuro(String bankpenztarnapszuro) {
@@ -54,25 +55,21 @@ public class AcceptAndFinalizeTask extends Task {
 		int currentrow = 0;
 		String lastid = "";
 		while (true) {
-			try {
-				if (lastid.equals(menu91.getId(currentrow))) {
+				if (lastid.equals(listPage.getId(currentrow))) {
 					currentrow++;
-					if(currentrow>=menu91.getNumberofRows())
+					if(currentrow>=listPage.getNumberofRows())
 						break;
 				}
-				lastid = menu91.getId(currentrow);
+				lastid = listPage.getId(currentrow);
 				processRow(currentrow);
-			}catch(Exception e) {
-				menu91.resolveExitError();
-			}
 		}
 	}
 
-	private void removePreviousPreloadedRecords() {
+	private void removePreviousPreloadedRecords(Menu91DetailsPage detailsPage) {
 		try {
-			while(menu91.getNumberOfElotoltottTetelek()!=0) {
+			while(detailsPage.getNumberOfElotoltottTetelek()!=0) {
 
-				menu91.removeElotolottTetel();
+				detailsPage.removeElotolottTetel();
 			}
 		}catch(Exception e) {
 			System.out.println("Hiba volt előző tételek törlésénél");
@@ -81,24 +78,24 @@ public class AcceptAndFinalizeTask extends Task {
 
 	private void processRow(int rowindex) {
 		System.out.println("processing row:" + rowindex);
-		if(menu91.getColor(rowindex) != Color.GREY) {
-			menu91.enterRowDetailsPage(rowindex);
-			removePreviousPreloadedRecords();
+		if(listPage.getColor(rowindex) != Color.GREY) {
+			Menu91DetailsPage detailsPage =  listPage.enterRowDetailsPage(rowindex);
+			removePreviousPreloadedRecords(detailsPage);
 			try {
-				int numofkontirtetelek = menu91.getNumberofKontirTetelek();
+				int numofkontirtetelek = detailsPage.getNumberofKontirTetelek();
 				for (int i = 0; i < numofkontirtetelek; i++) {
-					if (menu91.kontirtetelHasElotoltButton(i)) {
-						menu91.elotoltRow(i);
-						menu91.hozzaad();
+					if (detailsPage.kontirtetelHasElotoltButton(i)) {
+						detailsPage.elotoltRow(i);
+						detailsPage.hozzaad();
 					} else
-						menu91.hozzaad();
+						detailsPage.hozzaad();
 				}
-				menu91.closeDetails();
-				menu91.selectRow(rowindex);
-				menu91.veglegesit();
+				listPage = detailsPage.closeDetails();
+				listPage.selectRow(rowindex);
+				listPage.veglegesit();
 			}catch(Exception e) {
-				removePreviousPreloadedRecords();
-				menu91.closeDetails();
+				removePreviousPreloadedRecords(detailsPage);
+				listPage = detailsPage.closeDetails();
 			}
 		}
 	}
