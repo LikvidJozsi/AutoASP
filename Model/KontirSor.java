@@ -12,6 +12,14 @@ public class KontirSor implements Serializable{
 	private String megjegyzes;
 	private String kontirAzonosito;
 	
+	public KontirSor() {	}
+	
+	public KontirSor(KontirSor kontirSor) {
+		this.nev = kontirSor.nev;
+		this.megjegyzes = kontirSor.megjegyzes;
+		this.kontirAzonosito = kontirSor.kontirAzonosito;
+	}
+	
 	private void notifyChange() {
 		KontirSorManager.getInstance().notifyContentChanged();
 	}

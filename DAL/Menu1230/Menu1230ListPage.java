@@ -1,10 +1,12 @@
 package DAL.Menu1230;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import DAL.IColumn;
 import DAL.KaszperPage;
 import DAL.ListPage;
+import Model.AfaKulcs;
 
 public class Menu1230ListPage extends ListPage{
 	
@@ -45,6 +47,19 @@ public class Menu1230ListPage extends ListPage{
 				+ "a:nth-child(2)";
 		getElementByCss(css).click();
 		waitForLoading();
+	}
+	
+	public void selectAfaKulcs(String kulcs) {
+		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) "
+				+ "> span:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > "
+				+ "tr:nth-child(5) > td:nth-child(1) > span:nth-child(1) > span:nth-child(1) > "
+				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > "
+				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > "
+				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(11) > td:nth-child(2) > "
+				+ "span:nth-child(1) > select:nth-child(1)";
+		
+		Select selectbox = new Select(getElementByCss(css));
+		selectbox.selectByVisibleText(kulcs);
 	}
 	
 	public String getId(int rowindex) {
@@ -144,7 +159,7 @@ public class Menu1230ListPage extends ListPage{
 		
 	}
 	
-	public String getAfaKulcs(int rowindex) {
+	public AfaKulcs getAfaKulcs(int rowindex) {
 		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) > "
 				+ "span:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) "
 				+ "> td:nth-child(1) > span:nth-child(1) > span:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) "
@@ -153,7 +168,7 @@ public class Menu1230ListPage extends ListPage{
 				+ "td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(20) > td:nth-child(1) > "
 				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1) > table:nth-child(1) > "
 				+ "tbody:nth-child(1) > tr:nth-child("+(rowindex+2)+") > td:nth-child(9)";
-		return getElementByCss(css).getText();
+		return AfaKulcs.of(getElementByCss(css).getText());
 	}
 	public int getNumberOfAltetelek() {
 		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) > "
@@ -188,13 +203,13 @@ public class Menu1230ListPage extends ListPage{
 		return Float.parseFloat(getElementByCss(css).getText().replaceAll(",", ".").replaceAll(" ", ""));
 		
 	}
-	public String getKontirTetelKulcs(int rownum) {
+	public AfaKulcs getKontirTetelKulcs(int rownum) {
 		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) > "
 				+ "span:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(6) > "
 				+ "td:nth-child(1) > span:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > "
 				+ "td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > "
 				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child("+(rownum+2)+") > td:nth-child(7)";
-		return getElementByCss(css).getText();
+		return AfaKulcs.of(getElementByCss(css).getText());
 	}
 	public int getNumOfKontirTetelek() {
 		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) > "

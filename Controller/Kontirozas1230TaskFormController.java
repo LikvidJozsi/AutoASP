@@ -41,12 +41,7 @@ public class Kontirozas1230TaskFormController extends TaskFormController impleme
 		Kontirozas1230Task task = new Kontirozas1230Task();
 		task.setBankPenztarNapFilter(bankPenztarDatum.getText());
 		task.setPartnerNevFilter(partnerNev.getText());
-		task.setAfa27Kontir(afa27.getText());
-		task.setAfa18Kontir(afa18.getText());
-		task.setAfa5Kontir(afa5.getText());
-		task.setSzamlaTipus(megjegyzes.getText());
-		task.setAfahatalyankivuliKontir(ahk.getText());
-		task.setAfaMentesKontir(afaMentes.getText());
+		task.setKontirSorok(KontirSorManager.getInstance().getKontirSorok());
 		return task;
 	}
 

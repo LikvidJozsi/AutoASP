@@ -47,6 +47,7 @@ public class KontirSorokTabController implements Initializable{
 		kontirSorok = FXCollections.observableArrayList(KontirSorManager.getInstance().getKontirSorok());
 	}
 	
+	
 	public void addEventHandler() {
 		KontirSor newsor = new KontirSor();
 		newsor.setNev(nevTextField.getText());
