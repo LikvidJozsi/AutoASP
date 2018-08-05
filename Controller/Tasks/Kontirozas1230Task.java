@@ -15,6 +15,8 @@ import Controller.Alternatives;
 import Controller.ExpressionComparator;
 import Controller.Util;
 import DAL.KaszperPage;
+import DAL.Menu1230.KontirChooserPage;
+import DAL.Menu1230.Menu1230DetailsPage;
 import DAL.Menu1230.Menu1230ListPage;
 import DAL.Menu1230.Menu1230ListPage.Filter;
 import Model.AfaKulcs;
@@ -82,50 +84,59 @@ public class Kontirozas1230Task extends Task{
 
 
 	private void processRow(KontirSor kontirsor, int rowindex) {
+		Menu1230DetailsPage detailsPage = menu.enterDetailsPage(rowindex);
 		try {
-			menu.enterDetailsPage(rowindex);
-			removePreviousKontirTetelek();
-			menu.setKonyvelesiEsemenyDatuma(menu.getTeljesitesDatuma());
-			List<SzamlaTetel> tetelek = getSzamlaTetelek();
+			removePreviousKontirTetelek(detailsPage);
+			detailsPage.setKonyvelesiEsemenyDatuma(detailsPage.getTeljesitesDatuma());
+			List<SzamlaTetel> tetelek = getSzamlaTetelek(detailsPage);
 			while(!tetelek.isEmpty()) {
 				SzamlaTetel baseValueTetel = findBaseValueKontirTetel(tetelek);
-				createKontirTetel(baseValueTetel, kontirsor.getKontirAzonosito());
+				detailsPage = createKontirTetel(detailsPage,baseValueTetel, kontirsor.getKontirAzonosito());
 			}
-			tetelek = getSzamlaTetelek();
-			fixRoundingError(tetelek);
-			menu.clickBefejezesButton();
-			menu.tickRecord(rowindex);
-			menu.IgazolEsVeglegesit();
+			tetelek = getSzamlaTetelek(detailsPage);
+			fixRoundingError(detailsPage,tetelek);
+			menu =  detailsPage.clickBefejezesButton();
 		}catch(Exception e) {
 			System.out.println("Processrow hiba volt");
 			e.printStackTrace();
-			removePreviousKontirTetelek();
-			menu.clickBefejezesButton();
+			removePreviousKontirTetelek(detailsPage);
+			menu = detailsPage.clickBefejezesButton();
 		}
+		menu.tickRecord(rowindex);
+		menu.IgazolEsVeglegesit();
 	}
 	
-	private void createKontirTetel(SzamlaTetel tetel,String kontirSorId) {
-		System.out.println("Kontirtetel hozzaadasa, afa: " + tetel.afakulcs.getText() + ", Osszeg:" + tetel.osszeg);
-		menu.setKontirTetelSum(tetel.osszeg);
-		menu.enterKontirChooserMenu();
-		menu.setKontirIdFilter(kontirSorId);
-		menu.filterKontirList();
-		if(!menu.getFirstKontirTetelAzon().equals(kontirSorId)) {
-			System.out.println("Nem mukodott a kontirtetel szures! " + menu.getFirstKontirTetelAzon() + " != " + kontirSorId);
-			menu.filterKontirList();
+	private Menu1230DetailsPage selectKontirSor(Menu1230DetailsPage detailsPage,String kontirSorId) {
+		KontirChooserPage kontirPage = detailsPage.enterKontirChooserMenu();
+		if(kontirPage.getFirstKontirTetelAzon().equals(kontirSorId)) {
+			// if the correct kontirsor is already filtered
+			return kontirPage.chooseFirstKontirTetel();
 		}
-		menu.chooseFirstKontirTetel();
-		List<SzamlaTetel> kontirTetelek = getKontirTetelek();
+		kontirPage.setKontirIdFilter(kontirSorId);
+		kontirPage.filterKontirList();
+		while(!kontirPage.getFirstKontirTetelAzon().equals(kontirSorId)) {
+			System.out.println("Nem mukodott a kontirtetel szures! " + kontirPage.getFirstKontirTetelAzon() + " != " + kontirSorId);
+			kontirPage.filterKontirList();
+		}
+		return kontirPage.chooseFirstKontirTetel();
+	}
+	
+	private Menu1230DetailsPage createKontirTetel(Menu1230DetailsPage detailsPage,SzamlaTetel tetel,String kontirSorId) {
+		System.out.println("Kontirtetel hozzaadasa, afa: " + tetel.afakulcs.getText() + ", Osszeg:" + tetel.osszeg);
+		detailsPage.setKontirTetelSum(tetel.osszeg);
+		detailsPage = selectKontirSor(detailsPage,kontirSorId);
+		List<SzamlaTetel> kontirTetelek = getKontirTetelek(detailsPage);
 		for (int i = 0; i < kontirTetelek.size(); i++) {
 			if(Util.equals(kontirTetelek.get(i).osszeg,tetel.osszeg)) {
-				menu.modositKontirTetel(i);
+				detailsPage.modositKontirTetel(i);
 			}
 		}
-		menu.selectAfaKulcs(tetel.afakulcs.getText());
-		menu.hozzaadKontirTetel();
+		detailsPage.selectAfaKulcs(tetel.afakulcs.getText());
+		detailsPage.hozzaadKontirTetel();
 		if(!Util.equals(tetel.afakulcs.getValue(),0.0f)) {
-			menu.hozzaadKontirTetel();
+			detailsPage.hozzaadKontirTetel();
 		}
+		return detailsPage;
 	}
 	
 	private SzamlaTetel findBaseValueKontirTetel(List<SzamlaTetel> tetelek) {
@@ -167,15 +178,13 @@ public class Kontirozas1230Task extends Task{
 		if(!matchFound) {
 			System.out.println("A sor egy mintára sem illeszkedik");
 		}
-
-		//System.out.println("Tetel befejezve");
 	}
 
-	private void removePreviousKontirTetelek() {
-		while(menu.getNumOfKontirTetelek()!=0) {
+	private void removePreviousKontirTetelek(Menu1230DetailsPage detailsPage) {
+		while(detailsPage.getNumOfKontirTetelek()!=0) {
 			//System.out.println(menu.getNumOfKontirTetelek());
 			try {
-				menu.deleteKontirTetel(0);
+				detailsPage.deleteKontirTetel(0);
 			}catch(Exception e) {
 				System.out.println("Hiba volt törlésnél!");
 				break;
@@ -183,16 +192,16 @@ public class Kontirozas1230Task extends Task{
 		}
 	}
 
-	private void fixRoundingError(List<SzamlaTetel> szamlatetelek) {
-		List<SzamlaTetel> kontirtetelek = getKontirTetelek();
+	private void fixRoundingError(Menu1230DetailsPage detailsPage,List<SzamlaTetel> szamlatetelek) {
+		List<SzamlaTetel> kontirtetelek = getKontirTetelek(detailsPage);
 		kontirtetelek.forEach(tetel -> System.out.println("Kontirtetel: " + tetel.osszeg));
 		for (int i = 0; i < kontirtetelek.size(); i++) {
 			if(!contains(szamlatetelek, kontirtetelek.get(i).osszeg)) {
 				System.out.println("Kerekitesi hibat tanaltam: osszeg: " + kontirtetelek.get(i).osszeg);
 				//Tricky
-				menu.modositKontirTetel(i-1);
-				menu.hozzaadKontirTetel();
-				menu.hozzaadKontirTetel();
+				detailsPage.modositKontirTetel(i-1);
+				detailsPage.hozzaadKontirTetel();
+				detailsPage.hozzaadKontirTetel();
 			}
 
 		}
@@ -207,59 +216,30 @@ public class Kontirozas1230Task extends Task{
 		return false;
 	}
 
-	private List<SzamlaTetel> getKontirTetelek(){
-		int numofrows = menu.getNumOfKontirTetelek();
+	private List<SzamlaTetel> getKontirTetelek(Menu1230DetailsPage detailsPage){
+		int numofrows = detailsPage.getNumOfKontirTetelek();
 		List<SzamlaTetel> kontirtetelek = new ArrayList<>(numofrows);
 		for (int i = 0; i < numofrows; i++) {
 			SzamlaTetel ujTetel = new SzamlaTetel();
-			ujTetel.afakulcs = menu.getKontirTetelKulcs(i);
-			ujTetel.osszeg = menu.getKontirTetelOsszeg(i);
+			ujTetel.afakulcs = detailsPage.getKontirTetelKulcs(i);
+			ujTetel.osszeg = detailsPage.getKontirTetelOsszeg(i);
 			//System.out.println("Kontirtetel osszege:" + ujTetel.osszeg);
 			kontirtetelek.add(ujTetel);
 		}
 		return kontirtetelek;
 	}
 
-	private void createKontirTetel(String kontirsorName, String kulcs,List<SzamlaTetel> tetelek) {
-		int rownum = getIndexOfBiggestTetel(tetelek, kulcs);
-		if(rownum!= -1) {
-			System.out.println("Kontirtetel hozzaadasa, afa: " + kulcs + ", Osszeg:" + tetelek.get(rownum).osszeg);
-			menu.setKontirTetelSum(tetelek.get(rownum).osszeg);
-			menu.enterKontirChooserMenu();
-			menu.setKontirIdFilter(kontirsorName);
-			menu.filterKontirList();
-			if(!menu.getFirstKontirTetelAzon().equals(kontirsorName)) {
-				System.out.println("Nem mukodott a kontirtetel szures! " + menu.getFirstKontirTetelAzon() + " != " + kontirsorName);
-				menu.filterKontirList();
-			}
-			menu.chooseFirstKontirTetel();
-		}
-	}
 
-	private List<SzamlaTetel> getSzamlaTetelek(){
-		int tetelnum = menu.getNumberOfAltetelek();
+	private List<SzamlaTetel> getSzamlaTetelek(Menu1230DetailsPage detailsPage){
+		int tetelnum = detailsPage.getNumberOfAltetelek();
 		List<SzamlaTetel> tetelek = new ArrayList<>(tetelnum);
 		for (int i = 0; i < tetelnum; i++) {
 			SzamlaTetel newtetel = new SzamlaTetel();
-			newtetel.afakulcs = menu.getAfaKulcs(i);
-			newtetel.osszeg = menu.getSzamlaTetelSum(i);
+			newtetel.afakulcs = detailsPage.getAfaKulcs(i);
+			newtetel.osszeg = detailsPage.getSzamlaTetelSum(i);
 			tetelek.add(newtetel);
 		}
 		return tetelek;
-	}
-	private int getIndexOfBiggestTetel(List<SzamlaTetel> tetelek,String kulcs) {
-		int biggestindex = -1;
-		float biggestvalue = Float.MIN_VALUE;
-		for (int i = 0; i < tetelek.size(); i++) {
-			if(tetelek.get(i).osszeg > biggestvalue && tetelek.get(i).afakulcs.getText().equals(kulcs)) {
-				biggestvalue = tetelek.get(i).osszeg;
-				biggestindex = i;
-			}
-		}
-		if(biggestindex == -1) {
-			throw new RuntimeException(new Exception("No kontirtetel with the given afakulcs found"));
-		}
-		return biggestindex;
 	}
 
 	class SzamlaTetel{
