@@ -4,7 +4,7 @@ import DAL.KaszperPage;
 
 public abstract class Task {
 	
-	KaszperPage startingpage;
+	public KaszperPage startingpage;
 	
 	public Task() {}
 	

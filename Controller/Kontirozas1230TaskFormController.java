@@ -4,8 +4,8 @@ package Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Controller.Tasks.Kontirozas1230Task;
 import Controller.Tasks.Task;
+import Controller.Tasks.Kontirozas1230.Kontirozas1230Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
