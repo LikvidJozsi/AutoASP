@@ -25,7 +25,6 @@ public class Main extends Application implements EventHandler<WindowEvent>{
 	public void start(Stage primaryStage) throws Exception {
 		
 		try {
-			String institutionname = "TISZANÁNAI ÖNKORMÁNYZATI KONYHA";
 			
 			
 			//AcceptAndFinalizeTask task = new AcceptAndFinalizeTask(currentpage);

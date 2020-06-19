@@ -96,7 +96,11 @@ public class FrameController implements Initializable{
 	
 	public void executeTask(Task task) {
 		task.setStartingPage(currentpage);
-		currentpage = task.execute();
+		try {
+			currentpage = task.execute();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void disconnect() {

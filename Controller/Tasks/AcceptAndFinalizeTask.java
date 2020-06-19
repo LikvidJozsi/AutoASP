@@ -19,6 +19,10 @@ public class AcceptAndFinalizeTask extends Task {
 	private String bankPenztarNapSzuro;
 	private String evSzuro;
 
+	
+	//HACKY
+	int processedcounter = 0;
+	
 	public AcceptAndFinalizeTask() {}
 
 	public AcceptAndFinalizeTask(KaszperPage startingpage) {
@@ -32,8 +36,8 @@ public class AcceptAndFinalizeTask extends Task {
 		listPage.setFilter(evSzuro, Filter.EV);
 		listPage.applyFilters();
 		
-		/*for (int i = 0; i < 90; i++) {
-			menu91.selectNextPage();
+		/*for (int i = 0; i < 60; i++) {
+			listPage.selectNextPage();
 		}*/
 
 		do {
@@ -93,6 +97,11 @@ public class AcceptAndFinalizeTask extends Task {
 				listPage = detailsPage.closeDetails();
 				listPage.selectRow(rowindex);
 				listPage.veglegesit();
+				processedcounter++;
+				if(processedcounter == 20) {
+					processedcounter = 0;
+					listPage.sleep(40);
+				}
 			}catch(Exception e) {
 				removePreviousPreloadedRecords(detailsPage);
 				listPage = detailsPage.closeDetails();

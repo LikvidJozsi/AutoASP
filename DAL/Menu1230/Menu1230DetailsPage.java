@@ -13,7 +13,7 @@ public class Menu1230DetailsPage extends KaszperPage{
 		super(source);
 	}
 	
-	private static String konyvelesiEsemenyDatumaCss= "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) "
+	private static String konyvelesiEsemenyDatumaCss= "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(13) "
 			+ "> span:nth-child(2) > span:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > "
 			+ "tr:nth-child(5) > td:nth-child(1) > span:nth-child(1) > span:nth-child(1) > table:nth-child(1) > "
 			+ "tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > "
@@ -154,7 +154,7 @@ public class Menu1230DetailsPage extends KaszperPage{
 	}
 	
 	public String getTeljesitesDatuma() {
-		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(10) > span:nth-child(2) "
+		String css = "body > main:nth-child(4) > center:nth-child(1) > form:nth-child(13) > span:nth-child(2) "
 				+ "> span:nth-child(1) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > "
 				+ "tr:nth-child(2) > td:nth-child(1) > span:nth-child(1) > span:nth-child(1) > "
 				+ "table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(3) > td:nth-child(1) > "

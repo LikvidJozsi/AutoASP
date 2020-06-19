@@ -31,6 +31,9 @@ public abstract class BasePage {
 			throw new RuntimeException(new Exception("Already left the menu!"));
 	}
 	
+	public void close() {
+		driver.close();
+	}
 	
 	protected WebElement getElementByCss(String selector) {
 		return getDriver().findElement(By.cssSelector(selector));
@@ -54,7 +57,7 @@ public abstract class BasePage {
 		getDriver().findElement(By.cssSelector(cssselector)).click();
 	}
 	
-	protected void sleep(float secs) {
+	public void sleep(float secs) {
 		try {
 			Thread.sleep((long)secs*1000);
 		} catch (InterruptedException e) {
@@ -64,13 +67,17 @@ public abstract class BasePage {
 	}
 	
 	protected int getNumOfOccurances(String cssselector) {
-		 getDriver().manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);  
+		 setTimeout(2);
 		 int present = getDriver().findElements(By.cssSelector(cssselector)).size();
-		 getDriver().manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS); 
+		 setTimeout(30);
 		 return present;
 	}
 	protected void acceptAlert() {
 		new WebDriverWait(getDriver(), 10).until(ExpectedConditions.alertIsPresent());
 		getDriver().switchTo().alert().accept();
+	}
+	
+	public void setTimeout(int secs) {
+		getDriver().manage().timeouts().implicitlyWait(secs, TimeUnit.SECONDS);  
 	}
 }

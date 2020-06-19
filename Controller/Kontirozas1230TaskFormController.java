@@ -16,24 +16,6 @@ public class Kontirozas1230TaskFormController extends TaskFormController impleme
 	TextField bankPenztarDatum;
 	
 	@FXML
-	TextField afa27;
-	
-	@FXML
-	TextField afa18;
-	
-	@FXML
-	TextField afa5;
-	
-	@FXML
-	TextField ahk;
-	
-	@FXML
-	TextField afaMentes;
-	
-	@FXML
-	TextField megjegyzes;
-	
-	@FXML
 	TextField partnerNev;
 
 	@Override
@@ -47,14 +29,6 @@ public class Kontirozas1230TaskFormController extends TaskFormController impleme
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		afa27.setText("S0824");
-		afa5.setText("");
-		afa18.setText("");
-		ahk.setText("S0342");
-		afaMentes.setText("S0829");
-		
-		
-		megjegyzes.setText("közvilágítás");
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -28,14 +29,13 @@ public class LoginPage extends BasePage{
 	 * It is static so it may be called before the parent constructor was called.
 	 * @return A firefox window with the homepage open
 	 */
-	@SuppressWarnings("deprecation")
 	private static WebDriver openWindow() {
 		System.setProperty("webdriver.gecko.driver", "C:\\Users\\bduvi\\Desktop\\webscraping\\geckodriver.exe");
 		File file = new File("C:\\Users\\bduvi\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\epcaih5m.Selenium");
-		DesiredCapabilities dc = DesiredCapabilities.firefox();
 		FirefoxProfile profile = new FirefoxProfile(file);
-		dc.setCapability(FirefoxDriver.PROFILE, profile);
-		return new FirefoxDriver(dc);
+		FirefoxOptions options = new FirefoxOptions();
+		options.setProfile(profile);
+		return new FirefoxDriver(options);
 	}
 
 
@@ -75,6 +75,7 @@ public class LoginPage extends BasePage{
 	public void clickSignInButton() {
 		getDriver().findElement(By.id("signinbutton")).click();
 		waitForLoading();
+		
 	}
 
 	public void goToWebSite(String url) {
